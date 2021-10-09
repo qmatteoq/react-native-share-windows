@@ -9,9 +9,13 @@
 `$ react-native link react-native-share-windows`
 
 ## Usage
+
 ```javascript
 import ReactNativeShareWindows from 'react-native-share-windows';
+```
 
-// TODO: What to do with the module?
-ReactNativeShareWindows;
+```javascript
+const share = async () => {
+    await ReactNativeShareWindows.share("This is the title, "https://www.website.com");
+}
 ```
