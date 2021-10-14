@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.ReactNative.Managed;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.Storage;
+using Windows.Web.Http;
 
 namespace ReactNativeShareWindows
 {
@@ -15,8 +17,8 @@ namespace ReactNativeShareWindows
             _reactContext = reactContext;
         }
 
-        [ReactMethod("share")]
-        public void Share(string title, string uri)
+        [ReactMethod("shareText")]
+        public void ShareText(string title, string uri)
         {
             _reactContext.Handle.UIDispatcher.Post(() =>
             {
@@ -26,6 +28,35 @@ namespace ReactNativeShareWindows
                     args.Request.Data.SetWebLink(new Uri(uri));
                 };
             });
+
+            _reactContext.Handle.UIDispatcher.Post(() =>
+            {
+                DataTransferManager.ShowShareUI();
+            });
+        }
+
+        [ReactMethod("shareImage")]
+        public void ShareImage(string title, string uri)
+        {
+            _reactContext.Handle.UIDispatcher.Post(() =>
+            {
+                DataTransferManager.GetForCurrentView().DataRequested += async (obj, args) =>
+                {
+                    args.Request.Data.Properties.Title = title;
+                    DataRequestDeferral deferral = args.Request.GetDeferral();
+
+                    HttpClient client = new HttpClient();
+                    var stream = await client.GetBufferAsync(new Uri(uri));
+
+                    var localFile = await ApplicationData.Current.TemporaryFolder.CreateFileAsync($"{Guid.NewGuid()}.jpg", CreationCollisionOption.ReplaceExisting);
+
+                    await FileIO.WriteBufferAsync(localFile, stream);
+
+                    args.Request.Data.SetStorageItems(new[] { localFile });
+                    deferral.Complete();
+                };
+            });
+
 
             _reactContext.Handle.UIDispatcher.Post(() =>
             {
