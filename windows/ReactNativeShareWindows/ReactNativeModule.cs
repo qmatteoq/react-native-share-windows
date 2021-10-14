@@ -36,7 +36,7 @@ namespace ReactNativeShareWindows
         }
 
         [ReactMethod("shareImage")]
-        public void ShareImage(string title, string uri)
+        public void ShareImage(int id, string title, string uri)
         {
             _reactContext.Handle.UIDispatcher.Post(() =>
             {
@@ -48,7 +48,7 @@ namespace ReactNativeShareWindows
                     HttpClient client = new HttpClient();
                     var stream = await client.GetBufferAsync(new Uri(uri));
 
-                    var localFile = await ApplicationData.Current.TemporaryFolder.CreateFileAsync($"{Guid.NewGuid()}.jpg", CreationCollisionOption.ReplaceExisting);
+                    var localFile = await ApplicationData.Current.TemporaryFolder.CreateFileAsync($"WithersCollection-{id}.jpg", CreationCollisionOption.ReplaceExisting);
 
                     await FileIO.WriteBufferAsync(localFile, stream);
 
