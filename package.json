@@ -1,8 +1,8 @@
 {
   "name": "react-native-share-windows",
   "title": "React Native Share Windows",
-  "version": "1.0.0",
-  "description": "TODO",
+  "version": "1.1.0",
+  "description": "Share content on Windows using the native share feature",
   "main": "index.js",
   "files": [
     "README.md",
@@ -24,8 +24,8 @@
     "react-native"
   ],
   "author": {
-    "name": "Your Name",
-    "email": "yourname@email.com"
+    "name": "Matteo Pagani",
+    "email": "matteo.pagani@microsoft.com"
   },
   "license": "MIT",
   "licenseFilename": "LICENSE",
