@@ -36,13 +36,14 @@ namespace ReactNativeShareWindows
         }
 
         [ReactMethod("shareImage")]
-        public void ShareImage(int id, string title, string uri)
+        public void ShareImage(int id, string title, string description, string uri)
         {
             _reactContext.Handle.UIDispatcher.Post(() =>
             {
                 DataTransferManager.GetForCurrentView().DataRequested += async (obj, args) =>
                 {
                     args.Request.Data.Properties.Title = title;
+                    args.Request.Data.Properties.Description = description;
                     DataRequestDeferral deferral = args.Request.GetDeferral();
 
                     HttpClient client = new HttpClient();
